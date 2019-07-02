@@ -8,7 +8,7 @@ module.exports = {
   },
   pluginOptions: {
     electronBuilder: {
-      mainProcessFile: 'src/main/main.js',
+      mainProcessFile: 'src/main/index.js',
       mainProcessWatch: ['src/main']
     }
   }

@@ -5,6 +5,7 @@ import {
   createProtocol,
   installVueDevtools
 } from 'vue-cli-plugin-electron-builder/lib';
+import server from './server';
 const isDevelopment = process.env.NODE_ENV !== 'production';
 
 // Keep a global reference of the window object, if you don't, the window will
@@ -17,6 +18,8 @@ protocol.registerSchemesAsPrivileged([
 ]);
 
 function createWindow() {
+  const port = process.env.PORT || 3000;
+  server.listen(port);
   // Create the browser window.
   win = new BrowserWindow({
     width: 800,
