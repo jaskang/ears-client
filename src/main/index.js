@@ -20,6 +20,8 @@ protocol.registerSchemesAsPrivileged([
 function createWindow() {
   const port = process.env.PORT || 3000;
   server.listen(port);
+  console.log(`server start part:${port}`);
+
   // Create the browser window.
   win = new BrowserWindow({
     width: 800,

@@ -67,4 +67,4 @@ const decrypt = cipherBuffer => {
   return Buffer.concat([decipher.update(cipherBuffer), decipher.final()]);
 };
 
-module.exports = { weapi, linuxapi, eapi, decrypt };
+export default { weapi, linuxapi, eapi, decrypt };

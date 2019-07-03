@@ -6,6 +6,24 @@ module.exports = {
       .add('./src/renderer/main.js')
       .end();
   },
+  devServer: {
+    // proxy: {
+    //   '/proxy': {
+    //     target: 'https://devapi.wesure.cn',
+    //     changeOrigin: true,
+    //     secure: false,
+    //     ws: true,
+    //     onProxyReq: function(proxyReq, req, res) {
+    //       // add custom header to request
+    //       console.log(proxyReq.path);
+    //       console.log(req.path);
+    //       // or log the req
+    //     },
+    //     pathRewrite: { '^/proxy': '' },
+    //     logLevel: 'debug'
+    //   }
+    // }
+  },
   pluginOptions: {
     electronBuilder: {
       mainProcessFile: 'src/main/index.js',

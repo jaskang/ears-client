@@ -1,8 +1,11 @@
-export function resource(query, request) {
-  return request(
-    'POST',
-    `https://music.163.com/weapi/v1/discovery/recommend/resource`,
-    {},
-    { crypto: 'weapi', cookie: query.cookie, proxy: query.proxy }
-  );
+import http from './../util/http';
+
+export function resource(data, cookies = '') {
+  return http({
+    method: 'POST',
+    url: `https://music.163.com/weapi/v1/discovery/recommend/resource`,
+    data: {},
+    crypto: 'weapi',
+    cookies: cookies
+  });
 }
