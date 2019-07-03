@@ -1,27 +1,40 @@
 <template>
   <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png" />
-    <HelloWorld msg="sdf Welcome to Your Vue.js App" />
+    <div>
+      <ul>
+        <li v-for="track in likelist.tracks" :key="track.id">
+          {{ track.name }}-{{ track.ar.name }}
+        </li>
+      </ul>
+    </div>
+    <ControlBar />
   </div>
 </template>
 <script>
 // @ is an alias to /src
-import HelloWorld from '@/renderer/components/HelloWorld.vue';
-import { mapActions } from 'vuex';
+import ControlBar from '@/renderer/components/ControlBar';
+import { mapState, mapActions } from 'vuex';
 
 export default {
   name: 'Home',
   components: {
-    HelloWorld
+    ControlBar
+  },
+  computed: {
+    ...mapState('user', {
+      likelist: state => state.likelist,
+      profile: state => state.profile
+    })
   },
   async mounted() {
     const islogin = await this.isLogin();
     if (!islogin) {
       await this.login({ phone: '13307308426', password: 'k622768' });
     }
+    await this.playlist();
   },
   methods: {
-    ...mapActions('user', ['isLogin', 'login'])
+    ...mapActions('user', ['isLogin', 'login', 'playlist'])
   }
 };
 </script>

@@ -6,12 +6,20 @@ const userProfile = JSON.parse(
 export default {
   namespaced: true,
   state: {
-    profile: userProfile
+    profile: userProfile,
+    playlist: [],
+    likelist: null
   },
   mutations: {
     setProfile(state, profile) {
       state.profile = profile;
       window.localStorage.setItem('userProfile', JSON.stringify(profile));
+    },
+    setPlayList(state, playlist) {
+      state.playlist = playlist;
+    },
+    setLikeList(state, likelist) {
+      state.likelist = likelist;
     }
   },
   actions: {
@@ -37,6 +45,17 @@ export default {
         password: password
       });
       commit('setProfile', loginRet.profile);
+    },
+    async playlist({ commit, state }) {
+      const playlistRet = await neapi('/user/playlist', {
+        uid: state.profile.userId
+      });
+      commit('setPlayList', playlistRet.playlist);
+      const likelistRet = await neapi('/playlist/detail', {
+        id: playlistRet.playlist[0].id
+      });
+
+      commit('setLikeList', likelistRet.playlist);
     }
   },
   getters: {}
