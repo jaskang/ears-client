@@ -23,3 +23,13 @@ export function likelist(data, cookies = '') {
     cookies: cookies
   });
 }
+
+export function detail(data, cookies = '') {
+  return http({
+    method: 'POST',
+    url: `https://music.163.com/weapi/v1/user/detail/${data.uid}`,
+    data: {},
+    crypto: 'weapi',
+    cookies: cookies
+  });
+}
