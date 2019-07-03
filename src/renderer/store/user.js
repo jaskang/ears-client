@@ -1,39 +1,42 @@
 import neapi from '@/renderer/util/neapi';
-const user = window.localStorage.getItem('user') || {};
+const userProfile = JSON.parse(
+  window.localStorage.getItem('userProfile') || '{}'
+);
 
 export default {
   namespaced: true,
   state: {
-    detail: user
+    profile: userProfile
   },
   mutations: {
-    setDetail(state, detail) {
-      state.detail = detail;
+    setProfile(state, profile) {
+      state.profile = profile;
+      window.localStorage.setItem('userProfile', JSON.stringify(profile));
     }
   },
   actions: {
     async isLogin({ commit, state }) {
-      if (state.detail && state.detail.userId) {
-        const detailRet = await neapi('/user/detail', {
-          uid: state.detail.userId
-        });
-        window.localStorage.setItem('user', detailRet.data.profile);
-        commit('setDetail', detailRet.data.profile);
-        return Promise.resolve(true);
-      } else {
+      try {
+        if (state.profile && state.profile.userId) {
+          console.log(`has userId`);
+          const stateRet = await neapi('/login/state');
+          commit('setProfile', stateRet.profile);
+          await neapi('/login/refresh');
+          return Promise.resolve(true);
+        } else {
+          console.log(`no userId`);
+          return Promise.resolve(false);
+        }
+      } catch (err) {
         return Promise.resolve(false);
       }
     },
-    async login({ commit, state }, { phone, password }) {
+    async login({ commit }, { phone, password }) {
       const loginRet = await neapi('/login/cellphone', {
         phone: phone,
         password: password
       });
-      const detailRet = await neapi('/user/detail', {
-        uid: loginRet.data.profile.userId
-      });
-      window.localStorage.setItem('user', detailRet.data.profile);
-      commit('setDetail', detailRet.data.profile);
+      commit('setProfile', loginRet.profile);
     }
   },
   getters: {}

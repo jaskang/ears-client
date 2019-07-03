@@ -11,8 +11,6 @@ const router = new Router();
 router.all('/netease/:api/:func', async ctx => {
   console.log(ctx.params);
   const api = netease[ctx.params.api][ctx.params.func];
-  console.log(`ctx.headers.cookie:${ctx.headers.cookie}`);
-  console.log(`ctx.request.body:${ctx.request.body}`);
   const ret = await api(ctx.request.body, ctx.headers.cookie);
   ctx.set('Set-Cookie', ret.cookies);
   ctx.state = ret.state;
