@@ -1,7 +1,7 @@
 import axios from 'axios';
 import encrypt from './crypto';
 import querystring from 'querystring';
-import PacProxyAgent from 'pac-proxy-agent';
+// import PacProxyAgent from 'pac-proxy-agent';
 import zlib from 'zlib';
 
 // request.debug = true // 开启可看到更详细信息
@@ -61,12 +61,12 @@ const createRequest = ({
 
     if (crypto === 'weapi') {
       let csrfToken = (headers['Cookie'] || '').match(/_csrf=([^(;|$)]+)/);
-      console.log(`headers:${JSON.stringify(headers)}`);
+      // console.log(`headers:${JSON.stringify(headers)}`);
       data.csrf_token = csrfToken ? csrfToken[1] : '';
-      console.log(`csrf_token:${data.csrf_token}`);
+      // console.log(`csrf_token:${data.csrf_token}`);
       data = encrypt.weapi(data);
       url = url.replace(/\w*api/, 'weapi');
-      console.log(`data:${JSON.stringify(data)}`);
+      // console.log(`data:${JSON.stringify(data)}`);
     } else if (crypto === 'linuxapi') {
       data = encrypt.linuxapi({
         method: method,
