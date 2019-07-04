@@ -16,6 +16,7 @@
 .playbar-info {
   flex: 1;
   display: flex;
+  overflow: hidden;
   &__pic {
     width: 40px;
     height: 40px;
@@ -27,16 +28,21 @@
   &__text {
     flex: 1;
     padding-left: 10px;
+    overflow: hidden;
   }
   &__names {
     height: 22px;
+    display: flex;
+    white-space: nowrap;
+    align-items: flex-end;
   }
   &__song {
-    display: inline-block;
     font-size: @font-size-base;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
   &__singer {
-    display: inline-block;
+    flex: 1;
     color: @color-text-regular;
     font-size: @font-size-extra-small;
   }
@@ -95,8 +101,8 @@
         ></div>
         <div v-if="song" class="playbar-info__text">
           <div class="playbar-info__names">
-            <span class="playbar-info__song">{{ song.name }}</span>
-            <span class="playbar-info__singer">{{ song._singer.name }}</span>
+            <div class="playbar-info__song">{{ song.name }}</div>
+            <div class="playbar-info__singer">{{ song._singer.name }}</div>
           </div>
           <div class="playbar-info__timer">
             00:00 / {{ song.dt | duration }}

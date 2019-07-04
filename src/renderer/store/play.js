@@ -7,7 +7,7 @@ export default {
       isPlaying: false
     },
     song: {
-      name: '余温（完整版）',
+      name: '余温余温余温余温余温余温余温余温余温（完整版）',
       id: 1294243275,
       pst: 0,
       t: 0,

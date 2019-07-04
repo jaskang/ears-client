@@ -15,6 +15,7 @@
   }
   &__footer {
     height: 60px;
+    z-index: 1;
   }
 }
 </style>
@@ -22,24 +23,26 @@
   <div class="main">
     <div class="main__header"></div>
     <div class="main__body">
-      <ul v-if="likelist">
-        <li v-for="track in likelist.tracks" :key="track.id">
-          {{ track.name }}-{{ track._singer.name }}- {{ track.dt | duration }}
-        </li>
-      </ul>
+      <UserProfile
+        :likelist="likelist ? likelist.tracks : []"
+        :playlist="[]"
+        :reclist="[]"
+      />
     </div>
     <ControlBar class="main__footer" :song="song" :status="status" />
   </div>
 </template>
 <script>
 // @ is an alias to /src
+import UserProfile from '@/renderer/components/UserProfile/UserProfile';
 import ControlBar from '@/renderer/components/ControlBar';
 import { mapState, mapActions } from 'vuex';
 
 export default {
   name: 'Home',
   components: {
-    ControlBar
+    ControlBar,
+    UserProfile
   },
   computed: {
     ...mapState('play', {
