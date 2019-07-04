@@ -1,6 +1,8 @@
 <style lang="less">
 @import '~@/renderer/styles/vars.less';
 .musicctrl {
+  box-shadow: 0 0px 12px rgba(0, 0, 0, 0.1);
+  background-color: #fff;
   &__bar {
   }
   &__content {
@@ -17,31 +19,38 @@
   &__pic {
     width: 40px;
     height: 40px;
-    border-radius: 4px;
+    border-radius: 3px;
     background-color: black;
     background-size: contain;
     background-position: center center;
   }
   &__text {
     flex: 1;
+    padding-left: 10px;
   }
   &__names {
-    height: 20px;
-    line-height: 20px;
+    height: 22px;
   }
   &__song {
     display: inline-block;
+    font-size: @font-size-base;
   }
   &__singer {
     display: inline-block;
-    color: @color-text-secondary;
+    color: @color-text-regular;
+    font-size: @font-size-extra-small;
   }
   &__timer {
+    height: 18px;
+    line-height: 18px;
+    color: @color-text-secondary;
+    font-size: @font-size-extra-small;
   }
 }
 .playbar-ctrl {
   flex: 1;
   display: flex;
+  justify-content: center;
   align-items: center;
   &__button {
     font-size: 20px;
@@ -61,10 +70,12 @@
 }
 .playbar-other {
   flex: 1;
+  display: flex;
+  justify-content: flex-end;
+  color: @color-text-regular;
   &__button {
     font-size: 20px;
     line-height: 1;
-    color: @color-danger;
     text-align: center;
     width: 40px;
     height: 40px;
@@ -94,7 +105,7 @@
       </div>
       <div class="playbar-ctrl">
         <div class="playbar-ctrl__button">
-          <i v-if="song && sone.liked" class="icon-like"></i>
+          <i v-if="song && song.liked" class="icon-like"></i>
           <i class="icon-like-off"></i>
         </div>
         <div class="playbar-ctrl__button">
@@ -116,8 +127,8 @@
       </div>
       <div class="playbar-other">
         <div class="playbar-other__button">
-          <i v-if="status.voice > 0" class="icon-voice"></i>
-          <i v-else class="icon-voice-off"></i>
+          <i v-if="status && status.voice <= 0" class="icon-voice-off"></i>
+          <i v-else class="icon-voice"></i>
         </div>
       </div>
     </div>
