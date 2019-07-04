@@ -54,7 +54,13 @@ export default {
       const likelistRet = await neapi('/playlist/detail', {
         id: playlistRet.playlist[0].id
       });
-
+      likelistRet.playlist.tracks.forEach(track => {
+        if (track.ar && track.ar.length > 0) {
+          track._singer = track.ar[0];
+        } else {
+          track._singer = {};
+        }
+      });
       commit('setLikeList', likelistRet.playlist);
     }
   },

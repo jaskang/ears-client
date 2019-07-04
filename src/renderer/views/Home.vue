@@ -1,9 +1,9 @@
 <template>
   <div class="home">
     <div>
-      <ul>
+      <ul v-if="likelist">
         <li v-for="track in likelist.tracks" :key="track.id">
-          {{ track.name }}-{{ track.ar.name }}
+          {{ track.name }}-{{ track._singer.name }}- {{ track.dt | duration }}
         </li>
       </ul>
     </div>
