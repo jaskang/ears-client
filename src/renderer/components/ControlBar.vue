@@ -1,7 +1,9 @@
 <style lang="less">
 @import '~@/renderer/styles/vars.less';
+@import '~@/renderer/styles/vue-slider-component';
+
 .musicctrl {
-  box-shadow: 0 0px 5px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 0px 3px rgba(0, 0, 0, 0.3);
   background-color: #fff;
   &__bar {
   }
@@ -12,7 +14,12 @@
     padding: 10px;
   }
 }
-
+.volume-tooltip {
+  border-color: @border-color-base !important;
+  .popper__arrow {
+    border-top-color: @border-color-base !important;
+  }
+}
 .playbar-info {
   flex: 1;
   display: flex;
@@ -97,15 +104,17 @@
       <div class="playbar-info">
         <div
           class="playbar-info__pic"
-          :style="{ backgroundImage: `url(${song ? song.al.picUrl : ''})` }"
+          :style="{ backgroundImage: `url(${song ? song.pic : ''})` }"
         ></div>
         <div v-if="song" class="playbar-info__text">
           <div class="playbar-info__names">
-            <div class="playbar-info__song">{{ song.name }}</div>
-            <div class="playbar-info__singer">{{ song._singer.name }}</div>
+            <div class="playbar-info__song">{{ song ? song.name : '' }}</div>
+            <div class="playbar-info__singer">
+              {{ song ? song.singer : '' }}
+            </div>
           </div>
           <div class="playbar-info__timer">
-            00:00 / {{ song.dt | duration }}
+            00:00 / {{ song.duration | duration }}
           </div>
         </div>
       </div>
@@ -135,33 +144,85 @@
         <div class="playbar-other__button">
           <i class="icon-list"></i>
         </div>
-        <div class="playbar-other__button">
-          <i v-if="status && status.voice <= 0" class="icon-voice-off"></i>
-          <i v-else class="icon-voice"></i>
+        <div v-popover:popover1 class="playbar-other__button">
+          <el-tooltip
+            popper-class="volume-tooltip"
+            placement="top"
+            effect="light"
+          >
+            <vue-slider
+              slot="content"
+              :value="status.muted ? 0 : status.volume"
+              direction="btt"
+              tooltip="none"
+              :dot-size="[10, 10]"
+              :height="80"
+              :lazy="true"
+              @change="volumeChangeHandler"
+            ></vue-slider>
+            <i
+              v-if="status.muted || status.volume <= 0"
+              class="icon-voice-off"
+              @click="muteHandler(false)"
+            ></i>
+            <i v-else class="icon-voice" @click="muteHandler(true)"></i>
+          </el-tooltip>
         </div>
       </div>
     </div>
   </div>
 </template>
 <script>
-import { mapState } from 'vuex';
+import { Howl, Howler } from 'howler';
+import VueSlider from 'vue-slider-component';
+
 export default {
+  components: {
+    VueSlider
+  },
   props: {
     song: {
       type: Object,
       default: () => {
-        return null;
-      }
-    },
-    status: {
-      type: Object,
-      default: () => {
-        return null;
+        return {
+          id: '',
+          pic: '',
+          src: '',
+          name: '',
+          singer: '',
+          duration: 0
+        };
       }
     }
   },
   data() {
-    return {};
+    return {
+      status: {
+        muted: false,
+        volume: Howler.volume() * 100
+      },
+      sound: null
+    };
+  },
+  mounted() {},
+  methods: {
+    initHowl(song) {
+      this.sound = new Howl({
+        html5: true,
+        src: [song.src]
+      });
+    },
+    volumeChangeHandler(volume) {
+      this.status.volume = volume;
+      Howler.volume(volume / 100);
+    },
+    muteHandler(muted) {
+      Howler.mute(muted);
+      this.status.muted = muted;
+      if (this.status.volume <= 0) {
+        this.volumeChangeHandler(this.status.volume);
+      }
+    }
   }
 };
 </script>

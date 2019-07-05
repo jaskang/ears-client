@@ -25,9 +25,9 @@ function createWindow() {
   // Create the browser window.
   win = new BrowserWindow({
     width: 800,
-    height: 680,
+    height: 580,
     resizable: false,
-    titleBarStyle: 'hidden',
+    titleBarStyle: 'hiddenInset',
     webPreferences: {
       nodeIntegration: true
     }

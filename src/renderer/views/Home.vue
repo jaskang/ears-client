@@ -15,6 +15,10 @@
   &__aside {
     // background-color: #f5f7fa;
   }
+  &__main {
+    overflow-y: scroll;
+    padding: 10px 5px 10px 10px;
+  }
   &__footer {
     height: 60px;
     position: fixed;
@@ -32,12 +36,8 @@
         <el-aside class="main__aside" width="160px">
           <Aside />
         </el-aside>
-        <el-main>
-          <UserProfile
-            :likelist="likelist ? likelist.tracks : []"
-            :playlist="[]"
-            :reclist="[]"
-          />
+        <el-main class="main__main">
+          <router-view />
         </el-main>
       </el-container>
     </div>
@@ -46,7 +46,7 @@
 </template>
 <script>
 // @ is an alias to /src
-import UserProfile from '@/renderer/components/UserProfile/UserProfile';
+// import UserProfile from '@/renderer/components/UserProfile/UserProfile';
 import ControlBar from '@/renderer/components/ControlBar';
 import Aside from '@/renderer/components/Aside';
 import { mapState, mapActions } from 'vuex';
@@ -55,11 +55,10 @@ export default {
   name: 'Home',
   components: {
     ControlBar,
-    UserProfile,
     Aside
   },
   computed: {
-    ...mapState('play', {
+    ...mapState('player', {
       song: state => state.song,
       status: state => state.status
     }),
