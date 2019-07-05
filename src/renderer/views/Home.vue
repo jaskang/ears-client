@@ -20,7 +20,6 @@
     padding: 10px 5px 10px 10px;
   }
   &__footer {
-    height: 60px;
     position: fixed;
     bottom: 0;
     left: 0;

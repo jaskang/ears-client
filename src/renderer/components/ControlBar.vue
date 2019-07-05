@@ -3,15 +3,25 @@
 @import '~@/renderer/styles/vue-slider-component';
 
 .musicctrl {
-  box-shadow: 0 0px 3px rgba(0, 0, 0, 0.3);
-  background-color: #fff;
+  height: 65px;
   &__bar {
+    .player-slider {
+      .vue-slider-dot {
+        visibility: hidden;
+      }
+      &:hover {
+        .vue-slider-dot {
+          visibility: visible;
+        }
+      }
+    }
   }
   &__content {
+    background-color: #fff;
     width: 100%;
     display: flex;
     align-items: center;
-    padding: 10px;
+    padding: 5px 10px 10px 10px;
   }
 }
 .volume-tooltip {
@@ -99,7 +109,19 @@
 
 <template>
   <div class="musicctrl">
-    <div class="musicctrl__bar"></div>
+    <div class="musicctrl__bar">
+      <vue-slider
+        class="player-slider"
+        direction="ltr"
+        tooltip="none"
+        :height="2"
+        :dot-size="[8, 8]"
+        :duration="0.2"
+        :dot-options="{
+          tooltip: 'focus'
+        }"
+      ></vue-slider>
+    </div>
     <div class="musicctrl__content">
       <div class="playbar-info">
         <div
@@ -157,6 +179,7 @@
               tooltip="none"
               :dot-size="[10, 10]"
               :height="80"
+              :duration="0.2"
               :lazy="true"
               @change="volumeChangeHandler"
             ></vue-slider>
@@ -220,7 +243,7 @@ export default {
       Howler.mute(muted);
       this.status.muted = muted;
       if (this.status.volume <= 0) {
-        this.volumeChangeHandler(this.status.volume);
+        this.volumeChangeHandler(50);
       }
     }
   }
