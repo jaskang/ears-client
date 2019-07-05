@@ -114,12 +114,10 @@
         class="player-slider"
         direction="ltr"
         tooltip="none"
+        :value="durationVal"
         :height="2"
         :dot-size="[8, 8]"
         :duration="0.2"
-        :dot-options="{
-          tooltip: 'focus'
-        }"
       ></vue-slider>
     </div>
     <div class="musicctrl__content">
@@ -136,7 +134,7 @@
             </div>
           </div>
           <div class="playbar-info__timer">
-            00:00 / {{ song.duration | duration }}
+            {{ status.duration | duration }} / {{ song.duration | duration }}
           </div>
         </div>
       </div>
@@ -148,8 +146,11 @@
         <div class="playbar-ctrl__button">
           <i class="icon-prev"></i>
         </div>
-        <div class="playbar-ctrl__button playbar-ctrl__button--large">
-          <i v-if="status && status.isPlaying" class="icon-pause"></i>
+        <div
+          class="playbar-ctrl__button playbar-ctrl__button--large"
+          @click="playHandler"
+        >
+          <i v-if="status.playing" class="icon-pause"></i>
           <i v-else class="icon-play"></i>
         </div>
         <div class="playbar-ctrl__button">
@@ -218,22 +219,84 @@ export default {
       }
     }
   },
+  sound: null,
   data() {
     return {
       status: {
+        playing: false,
         muted: false,
+        duration: 0,
         volume: Howler.volume() * 100
       },
-      sound: null
+      soundId: null
     };
   },
-  mounted() {},
+  computed: {
+    durationVal() {
+      if (this.status.duration) {
+        return (this.status.duration / this.song.duration) * 100;
+      }
+      return 0;
+    }
+  },
+  watch: {
+    song(val) {
+      console.log(val);
+
+      this.initHowl(val);
+    }
+  },
+  mounted() {
+    setInterval(() => {
+      if (this.sound && this.soundId) {
+        this.status.duration = this.sound.seek() * 1000;
+        console.log('=======');
+
+        console.log(this.status.duration);
+        console.log(this.song.duration);
+        console.log(this.durationVal);
+      }
+    }, 1000);
+  },
   methods: {
     initHowl(song) {
+      this.soundId = null;
       this.sound = new Howl({
         html5: true,
-        src: [song.src]
+        src: [song.src],
+        onload() {
+          console.log('onload');
+        },
+        onloaderror() {
+          console.log('onloaderror');
+        },
+        onplayerror() {
+          console.log('onplayerror');
+        },
+        onplay() {
+          console.log('onplay');
+        },
+        onend() {
+          console.log('onend');
+        },
+        onpause() {
+          console.log('onpause');
+        },
+        onstop() {
+          console.log('onstop');
+        }
       });
+      console.log(this.sound);
+    },
+    playHandler() {
+      const playing = this.sound.playing();
+      if (playing) {
+        this.sound.pause();
+        this.status.playing = false;
+      } else {
+        this.soundId = this.sound.play();
+        this.status.playing = true;
+      }
     },
     volumeChangeHandler(volume) {
       this.status.volume = volume;

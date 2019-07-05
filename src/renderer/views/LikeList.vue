@@ -24,6 +24,7 @@
       style="width: 100%"
       size="mini"
       cell-class-name="table-cell"
+      @row-dblclick="playHandler"
     >
       <el-table-column type="index" width="40" align="center"></el-table-column>
       <el-table-column label="" width="40" align="center">
@@ -56,7 +57,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { mapState, mapActions } from 'vuex';
 
 export default {
   props: {},
@@ -64,6 +65,14 @@ export default {
     ...mapState('user', {
       likelist: state => state.likelist
     })
+  },
+  methods: {
+    ...mapActions('player', {
+      loadSong: 'load'
+    }),
+    async playHandler(row) {
+      await this.loadSong(row);
+    }
   }
 };
 </script>

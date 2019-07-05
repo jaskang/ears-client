@@ -40,7 +40,7 @@
         </el-main>
       </el-container>
     </div>
-    <ControlBar class="main__footer" :song="song" :status="status" />
+    <ControlBar class="main__footer" :song="playerSong" />
   </div>
 </template>
 <script>
@@ -64,7 +64,20 @@ export default {
     ...mapState('user', {
       likelist: state => state.likelist,
       profile: state => state.profile
-    })
+    }),
+    playerSong() {
+      if (this.song) {
+        return {
+          id: this.song.id,
+          pic: this.song.al.picUrl,
+          src: this.song._src,
+          name: this.song.name,
+          singer: this.song._singer.name,
+          duration: this.song.dt
+        };
+      }
+      return null;
+    }
   },
   async mounted() {
     const islogin = await this.isLogin();

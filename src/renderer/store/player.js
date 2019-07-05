@@ -1,4 +1,3 @@
-import { Howl, Howler } from 'howler';
 import neapi from '@/renderer/util/neapi';
 
 export default {
@@ -16,12 +15,12 @@ export default {
   },
   actions: {
     async load({ commit }, song) {
-      if (song._src) {
+      if (!song._src) {
         const urlRet = await neapi('/song/url', {
           id: song.id,
           br: 320000
         });
-        song._src = urlRet.data;
+        song._src = urlRet.data[0].url;
       }
       commit('load', song);
       return Promise.resolve(song);
