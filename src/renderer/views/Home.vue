@@ -2,20 +2,25 @@
 @import '~@/renderer/styles/vars';
 .main {
   height: 100vh;
-  display: flex;
-  flex-direction: column;
+  position: relative;
   &__header {
     height: 50px;
-    background-color: @border-color-light;
+    background-color: #f5f7fa;
     -webkit-app-region: drag;
   }
   &__body {
-    flex: 1;
-    overflow-y: auto;
+    height: calc(100vh - 110px);
+    overflow: hidden;
+  }
+  &__aside {
+    // background-color: #f5f7fa;
   }
   &__footer {
     height: 60px;
-    z-index: 1;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
   }
 }
 </style>
@@ -23,11 +28,18 @@
   <div class="main">
     <div class="main__header"></div>
     <div class="main__body">
-      <UserProfile
-        :likelist="likelist ? likelist.tracks : []"
-        :playlist="[]"
-        :reclist="[]"
-      />
+      <el-container style="height:100%;">
+        <el-aside class="main__aside" width="160px">
+          <Aside />
+        </el-aside>
+        <el-main>
+          <UserProfile
+            :likelist="likelist ? likelist.tracks : []"
+            :playlist="[]"
+            :reclist="[]"
+          />
+        </el-main>
+      </el-container>
     </div>
     <ControlBar class="main__footer" :song="song" :status="status" />
   </div>
@@ -36,13 +48,15 @@
 // @ is an alias to /src
 import UserProfile from '@/renderer/components/UserProfile/UserProfile';
 import ControlBar from '@/renderer/components/ControlBar';
+import Aside from '@/renderer/components/Aside';
 import { mapState, mapActions } from 'vuex';
 
 export default {
   name: 'Home',
   components: {
     ControlBar,
-    UserProfile
+    UserProfile,
+    Aside
   },
   computed: {
     ...mapState('play', {

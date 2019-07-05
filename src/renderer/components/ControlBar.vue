@@ -1,7 +1,7 @@
 <style lang="less">
 @import '~@/renderer/styles/vars.less';
 .musicctrl {
-  box-shadow: 0 0px 12px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 0px 5px rgba(0, 0, 0, 0.3);
   background-color: #fff;
   &__bar {
   }
@@ -132,6 +132,9 @@
         </div>
       </div>
       <div class="playbar-other">
+        <div class="playbar-other__button">
+          <i class="icon-list"></i>
+        </div>
         <div class="playbar-other__button">
           <i v-if="status && status.voice <= 0" class="icon-voice-off"></i>
           <i v-else class="icon-voice"></i>

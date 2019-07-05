@@ -4,7 +4,7 @@
 </style>
 <template>
   <div class="user-profile">
-    <el-tabs v-model="activeName" @tab-click="handleClick">
+    <el-tabs v-model="activeName" type="border-card" @tab-click="handleClick">
       <el-tab-pane label="喜欢音乐" name="likelist">
         <el-table :data="likelist" style="width: 100%">
           <el-table-column label="歌名">
