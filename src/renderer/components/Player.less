@@ -1,0 +1,100 @@
+@import '~@/renderer/styles/vars.less';
+@import '~@/renderer/styles/vue-slider-component';
+
+.jplayer {
+  height: 65px;
+  &__bar {
+  }
+  &__slider {
+    .vue-slider-dot {
+      visibility: hidden;
+    }
+    &:hover {
+      .vue-slider-dot {
+        visibility: visible;
+      }
+    }
+  }
+  &__content {
+    background-color: #fff;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    padding: 5px 10px 10px 10px;
+  }
+
+  &__info {
+    flex: 1;
+    display: flex;
+    overflow: hidden;
+  }
+  &__pic {
+    width: 40px;
+    height: 40px;
+    border-radius: 3px;
+    background-color: black;
+    background-size: contain;
+    background-position: center center;
+  }
+  &__text {
+    flex: 1;
+    padding-left: 10px;
+    overflow: hidden;
+  }
+  &__names {
+    height: 22px;
+    display: flex;
+    white-space: nowrap;
+    align-items: flex-end;
+  }
+  &__song {
+    font-size: @font-size-base;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  &__singer {
+    flex: 1;
+    color: @color-text-regular;
+    font-size: @font-size-extra-small;
+    padding-left: 5px;
+  }
+  &__timer {
+    height: 18px;
+    line-height: 18px;
+    color: @color-text-secondary;
+    font-size: @font-size-extra-small;
+  }
+  &__volume-tooltip {
+    border-color: @border-color-base !important;
+    .popper__arrow {
+      border-top-color: @border-color-base !important;
+    }
+  }
+  &__button {
+    font-size: 20px;
+    line-height: 1;
+    text-align: center;
+    width: 40px;
+    height: 40px;
+    line-height: 40px;
+  }
+  &__ctrl {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: @color-danger;
+    .jplayer__button--play {
+      color: #fff;
+      background-color: @color-danger;
+      border-radius: 20px;
+      margin: 0 16px;
+    }
+  }
+  &__other {
+    flex: 1;
+    display: flex;
+    justify-content: flex-end;
+    color: @color-text-regular;
+  }
+}

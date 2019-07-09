@@ -40,20 +40,20 @@
         </el-main>
       </el-container>
     </div>
-    <ControlBar class="main__footer" :song="playerSong" />
+    <Player class="main__footer" :song="playerSong" />
   </div>
 </template>
 <script>
 // @ is an alias to /src
 // import UserProfile from '@/renderer/components/UserProfile/UserProfile';
-import ControlBar from '@/renderer/components/ControlBar';
+import Player from '@/renderer/components/Player';
 import Aside from '@/renderer/components/Aside';
 import { mapState, mapActions } from 'vuex';
 
 export default {
   name: 'Home',
   components: {
-    ControlBar,
+    Player,
     Aside
   },
   computed: {

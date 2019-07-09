@@ -14,13 +14,16 @@ export default {
     }
   },
   actions: {
-    async load({ commit }, song) {
+    load({ commit }, song) {
       if (!song._src) {
-        const urlRet = await neapi('/song/url', {
-          id: song.id,
-          br: 320000
-        });
-        song._src = urlRet.data[0].url;
+        // const urlRet = await neapi('/song/url', {
+        //   id: song.id,
+        //   br: 320000
+        // });
+        song._src = `https://music.163.com/song/media/outer/url?id=${
+          song.id
+        }.mp3`;
+        // song._src = urlRet.data.url
       }
       commit('load', song);
       return Promise.resolve(song);

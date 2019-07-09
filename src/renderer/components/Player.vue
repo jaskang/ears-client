@@ -1,0 +1,209 @@
+<template>
+  <div class="jplayer">
+    <audio ref="audioEl" autoplay />
+    <div class="jplayer__bar">
+      <vue-slider
+        class="jplayer__slider"
+        direction="ltr"
+        tooltip="none"
+        :value="durationVal"
+        :height="2"
+        :dot-size="[8, 8]"
+        :duration="1"
+      ></vue-slider>
+    </div>
+    <div class="jplayer__content">
+      <div class="jplayer__info">
+        <div
+          class="jplayer__pic"
+          :style="{ backgroundImage: `url(${song ? song.pic : ''})` }"
+        ></div>
+        <div v-if="song" class="jplayer__text">
+          <div class="jplayer__names">
+            <div class="jplayer__song">{{ song ? song.name : '' }}</div>
+            <div class="jplayer__singer">
+              {{ song ? song.singer : '' }}
+            </div>
+          </div>
+          <div class="jplayer__timer">
+            {{ status.duration | duration }} / {{ song.duration | duration }}
+          </div>
+        </div>
+      </div>
+      <div class="jplayer__ctrl">
+        <div class="jplayer__button">
+          <i v-if="song && song.liked" class="icon-like"></i>
+          <i class="icon-like-off"></i>
+        </div>
+        <div class="jplayer__button">
+          <i class="icon-prev"></i>
+        </div>
+        <div class="jplayer__button jplayer__button--play" @click="playHandler">
+          <i v-if="status.playing" class="icon-pause"></i>
+          <i v-else class="icon-play"></i>
+        </div>
+        <div class="jplayer__button">
+          <i class="icon-next"></i>
+        </div>
+        <div class="jplayer__button">
+          <i class="icon-mode-recommend"></i>
+          <!-- <i class="icon-mode-random"></i>
+          <i class="icon-mode-list"></i>
+          <i class="icon-mode-single"></i> -->
+        </div>
+      </div>
+      <div class="jplayer__other">
+        <div class="jplayer__button">
+          <i class="icon-list"></i>
+        </div>
+        <div class="jplayer__button">
+          <el-tooltip
+            popper-class="jplayer__volume-tooltip"
+            placement="top"
+            effect="light"
+          >
+            <vue-slider
+              slot="content"
+              :value="volumeVal"
+              direction="btt"
+              tooltip="none"
+              :dot-size="[10, 10]"
+              :height="80"
+              :duration="0.2"
+              @change="volumeChangeHandler"
+            ></vue-slider>
+            <i
+              v-if="volumeVal <= 0"
+              class="icon-voice-off"
+              @click="muteHandler(false)"
+            ></i>
+            <i v-else class="icon-voice" @click="muteHandler(true)"></i>
+          </el-tooltip>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+<script>
+import './Player.less';
+import VueSlider from 'vue-slider-component';
+
+export default {
+  components: {
+    VueSlider
+  },
+  props: {
+    song: {
+      type: Object,
+      default: () => {
+        return {
+          id: '',
+          pic: '',
+          src: '',
+          name: '',
+          singer: '',
+          duration: 0
+        };
+      }
+    }
+  },
+  data() {
+    return {
+      status: {
+        playing: false,
+        duration: 0,
+        volume: 100,
+        muted: false
+      },
+      audioEl: null,
+      soundId: null
+    };
+  },
+  computed: {
+    durationVal() {
+      if (this.status.duration) {
+        return (this.status.duration / this.song.duration) * 100;
+      }
+      return 0;
+    },
+    volumeVal() {
+      if (this.audioEl) {
+        return this.status.muted ? 0 : this.status.volume;
+      }
+      return 100;
+    }
+  },
+  watch: {
+    song(val) {
+      this.initHowl(val);
+    }
+  },
+  mounted() {
+    this.audioEl = this.$refs.audioEl;
+    setInterval(() => {}, 1000);
+  },
+  methods: {
+    initHowl(song) {
+      this.soundId = null;
+      this.status.playing = false;
+      this.status.duration = 0;
+      this.audioEl.src = song.src;
+      this.audioEl.oncanplay = () => {
+        console.log(`oncanplay`);
+      };
+      this.audioEl.onerror = () => {
+        console.log(`onerror`);
+      };
+      this.audioEl.onplay = () => {
+        console.log(`onplay`);
+        // this.status.playing = true;
+      };
+      this.audioEl.onplaying = () => {
+        console.log(`onplaying`);
+        this.status.playing = true;
+      };
+      this.audioEl.onpause = () => {
+        console.log(`onpause`);
+        this.status.playing = false;
+      };
+      this.audioEl.onended = () => {
+        console.log(`onended`);
+        this.status.playing = false;
+      };
+      this.audioEl.oncanplay = () => {
+        console.log(`oncanplay`);
+      };
+      this.audioEl.ontimeupdate = () => {
+        console.log(`ontimeupdate`);
+        this.status.duration = this.audioEl.currentTime * 1000;
+      };
+      this.audioEl.onvolumechange = () => {
+        console.log(`onvolumechange`);
+      };
+    },
+    playHandler() {
+      const stoped = this.audioEl.paused || this.audioEl.ended;
+      if (stoped) {
+        this.audioEl.play();
+      } else {
+        this.audioEl.pause();
+      }
+    },
+    volumeChangeHandler(volume) {
+      this.audioEl.volume = volume / 100;
+      this.status.volume = this.audioEl.volume;
+    },
+    muteHandler(muted) {
+      this.status.muted = muted;
+      if (muted) {
+        this.audioEl.muted = muted;
+      } else {
+        this.audioEl.muted = muted;
+        if (this.audioEl.volume <= 0) {
+          this.volumeChangeHandler(100);
+        }
+      }
+    }
+  }
+};
+</script>
