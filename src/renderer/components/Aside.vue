@@ -35,7 +35,12 @@
 }
 </style>
 <template>
-  <el-menu class="aside" text-color="#303133" active-text-color="#f56c6c">
+  <el-menu
+    class="aside"
+    text-color="#303133"
+    active-text-color="#f56c6c"
+    :router="true"
+  >
     <div class="aside__header">
       <div
         class="aside__avatar"
@@ -46,16 +51,16 @@
       ></div>
     </div>
     <hr />
-    <el-menu-item index="1">
+    <el-menu-item index="/playlist">
       <i class="icon-liebiao"></i>
       <span slot="title">播放列表</span>
     </el-menu-item>
     <hr />
-    <el-menu-item index="2">
+    <el-menu-item index="/recommend-list">
       <i class="icon-sousuo"></i>
-      <span slot="title">发现音乐</span>
+      <span slot="title">每日推荐</span>
     </el-menu-item>
-    <el-menu-item index="3">
+    <el-menu-item index="/">
       <i class="icon-xihuan"></i>
       <span slot="title">我喜欢的音乐</span>
     </el-menu-item>

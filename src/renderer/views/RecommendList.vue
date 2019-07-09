@@ -20,7 +20,7 @@
 <template>
   <div>
     <el-table
-      :data="likeList"
+      :data="recommendList"
       style="width: 100%"
       size="mini"
       cell-class-name="table-cell"
@@ -61,15 +61,21 @@ export default {
   props: {},
   computed: {
     ...mapState('user', {
-      likeList: state => state.likeList
+      recommendList: state => state.recommendList
     })
   },
+  mounted() {
+    this.getRecommendList();
+  },
   methods: {
+    ...mapActions('user', {
+      getRecommendList: 'getRecommendList'
+    }),
     ...mapActions('player', {
       loadSong: 'load'
     }),
     async playHandler(row) {
-      await this.loadSong({ list: [...this.likeList], id: row.id });
+      await this.loadSong({ list: [...this.recommendList], id: row.id });
     }
   }
 };

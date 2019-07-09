@@ -1,4 +1,6 @@
 import neapi from '@/renderer/util/neapi';
+import { trackTransformer, recTransformer } from '@/renderer/util/model';
+
 const userProfile = JSON.parse(
   window.localStorage.getItem('userProfile') || '{}'
 );
@@ -7,19 +9,25 @@ export default {
   namespaced: true,
   state: {
     profile: userProfile,
-    playlist: [],
-    likelist: null
+    playList: [],
+    recommendList: [],
+    likeList: [],
+    likeIds: []
   },
   mutations: {
     setProfile(state, profile) {
       state.profile = profile;
       window.localStorage.setItem('userProfile', JSON.stringify(profile));
     },
-    setPlayList(state, playlist) {
-      state.playlist = playlist;
+    setPlayList(state, playList) {
+      state.playList = playList;
     },
-    setLikeList(state, likelist) {
-      state.likelist = likelist;
+    setLikeList(state, { likeList, likeIds }) {
+      state.likeList = likeList;
+      state.likeIds = likeIds;
+    },
+    setRecommendList(state, { recommendList }) {
+      state.recommendList = recommendList;
     }
   },
   actions: {
@@ -46,22 +54,31 @@ export default {
       });
       commit('setProfile', loginRet.profile);
     },
-    async playlist({ commit, state }) {
+    async getRecommendList({ commit }) {
+      const recommendList = await neapi('/recommend/songs', {});
+      const list = recommendList.recommend.map(rec => {
+        return recTransformer(rec);
+      });
+      commit('setRecommendList', { recommendList: list });
+    },
+    async playList({ commit, state }) {
       const playlistRet = await neapi('/user/playlist', {
         uid: state.profile.userId
       });
       commit('setPlayList', playlistRet.playlist);
-      const likelistRet = await neapi('/playlist/detail', {
+      const likeListRet = await neapi('/playlist/detail', {
         id: playlistRet.playlist[0].id
       });
-      likelistRet.playlist.tracks.forEach(track => {
-        if (track.ar && track.ar.length > 0) {
-          track._singer = track.ar[0];
-        } else {
-          track._singer = {};
-        }
+      const likeList = likeListRet.playlist.tracks.map(track => {
+        return trackTransformer(track);
       });
-      commit('setLikeList', likelistRet.playlist);
+      const likeIds = likeListRet.playlist.trackIds.map(trackId => {
+        return trackId.id;
+      });
+      commit('setLikeList', {
+        likeList,
+        likeIds
+      });
     }
   },
   getters: {}

@@ -1,32 +1,59 @@
-import neapi from '@/renderer/util/neapi';
-
+const modes = ['recommend', 'random', 'list', 'single'];
 export default {
   namespaced: true,
   state: {
-    status: {
-      isPlaying: false
-    },
-    song: null
+    list: [],
+    listIds: [],
+    index: 0,
+    song: null,
+    mode: modes[2]
   },
   mutations: {
-    load(state, song) {
+    prev(state) {
+      let index = 0;
+      if (state.index <= 0) {
+        console.log(`第一首了`);
+      } else {
+        index = state.index - 1;
+        state.index = index;
+        state.song = state.list[index];
+      }
+    },
+    next(state) {
+      let index = 0;
+      if (state.index + 1 >= state.list.length) {
+        console.log(`最后一首了`);
+      } else {
+        index = state.index + 1;
+        state.index = index;
+        state.song = state.list[index];
+      }
+    },
+    load(state, { list, id }) {
+      const listIds = list.reduce((prev, current) => {
+        prev.push(current.id);
+        return prev;
+      }, []);
+      const index = listIds.indexOf(id);
+      const song = list[index];
+
+      state.list = list;
+      state.listIds = listIds;
+      state.index = index;
       state.song = song;
     }
   },
   actions: {
-    load({ commit }, song) {
-      if (!song._src) {
-        // const urlRet = await neapi('/song/url', {
-        //   id: song.id,
-        //   br: 320000
-        // });
-        song._src = `https://music.163.com/song/media/outer/url?id=${
-          song.id
-        }.mp3`;
-        // song._src = urlRet.data.url
+    load({ commit }, { list, id = null }) {
+      console.log(list);
+      console.log(id);
+      if (list && list.length > 0) {
+        if (id) {
+          commit('load', { list, id });
+        } else {
+          commit('load', { list, id: list[0].id });
+        }
       }
-      commit('load', song);
-      return Promise.resolve(song);
     }
   },
   getters: {}

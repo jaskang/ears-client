@@ -9,7 +9,8 @@
         :value="durationVal"
         :height="2"
         :dot-size="[8, 8]"
-        :duration="1"
+        :duration="0.1"
+        @change="durationChangeHandler"
       ></vue-slider>
     </div>
     <div class="jplayer__content">
@@ -31,21 +32,21 @@
         </div>
       </div>
       <div class="jplayer__ctrl">
-        <div class="jplayer__button">
+        <div class="jplayer__button" @click="likeClickHandler">
           <i v-if="song && song.liked" class="icon-like"></i>
           <i class="icon-like-off"></i>
         </div>
-        <div class="jplayer__button">
+        <div class="jplayer__button" @click="prevClickHandler">
           <i class="icon-prev"></i>
         </div>
         <div class="jplayer__button jplayer__button--play" @click="playHandler">
           <i v-if="status.playing" class="icon-pause"></i>
           <i v-else class="icon-play"></i>
         </div>
-        <div class="jplayer__button">
+        <div class="jplayer__button" @click="nextClickHandler">
           <i class="icon-next"></i>
         </div>
-        <div class="jplayer__button">
+        <div class="jplayer__button" @click="modeClickHandler">
           <i class="icon-mode-recommend"></i>
           <!-- <i class="icon-mode-random"></i>
           <i class="icon-mode-list"></i>
@@ -102,7 +103,8 @@ export default {
           src: '',
           name: '',
           singer: '',
-          duration: 0
+          duration: 0,
+          liked: false
         };
       }
     }
@@ -115,14 +117,14 @@ export default {
         volume: 100,
         muted: false
       },
-      audioEl: null,
-      soundId: null
+      audioEl: null
     };
   },
   computed: {
     durationVal() {
       if (this.status.duration) {
-        return (this.status.duration / this.song.duration) * 100;
+        const val = (this.status.duration / this.song.duration) * 100;
+        return val > 100 ? 100 : val;
       }
       return 0;
     },
@@ -140,11 +142,9 @@ export default {
   },
   mounted() {
     this.audioEl = this.$refs.audioEl;
-    setInterval(() => {}, 1000);
   },
   methods: {
     initHowl(song) {
-      this.soundId = null;
       this.status.playing = false;
       this.status.duration = 0;
       this.audioEl.src = song.src;
@@ -153,6 +153,7 @@ export default {
       };
       this.audioEl.onerror = () => {
         console.log(`onerror`);
+        this.$emit('onerror');
       };
       this.audioEl.onplay = () => {
         console.log(`onplay`);
@@ -169,6 +170,7 @@ export default {
       this.audioEl.onended = () => {
         console.log(`onended`);
         this.status.playing = false;
+        this.$emit('onended');
       };
       this.audioEl.oncanplay = () => {
         console.log(`oncanplay`);
@@ -182,16 +184,18 @@ export default {
       };
     },
     playHandler() {
-      const stoped = this.audioEl.paused || this.audioEl.ended;
-      if (stoped) {
-        this.audioEl.play();
-      } else {
-        this.audioEl.pause();
+      if (this.audioEl.duration > 0) {
+        const stoped = this.audioEl.paused || this.audioEl.ended;
+        if (stoped) {
+          this.audioEl.play();
+        } else {
+          this.audioEl.pause();
+        }
       }
     },
     volumeChangeHandler(volume) {
       this.audioEl.volume = volume / 100;
-      this.status.volume = this.audioEl.volume;
+      this.status.volume = volume;
     },
     muteHandler(muted) {
       this.status.muted = muted;
@@ -203,6 +207,29 @@ export default {
           this.volumeChangeHandler(100);
         }
       }
+    },
+    durationChangeHandler(value) {
+      if (this.song && this.song.duration > 0) {
+        const duration = (value / 100) * (this.song.duration / 1000);
+        this.audioEl.currentTime = duration;
+      } else {
+        this.status.duration = 0;
+      }
+    },
+    likeClickHandler() {
+      this.song && this.$emit('like', { id: this.song.id });
+    },
+    prevClickHandler() {
+      this.song && this.$emit('prev', { id: this.song.id });
+    },
+    nextClickHandler() {
+      this.song && this.$emit('next', { id: this.song.id });
+    },
+    modeClickHandler() {
+      this.song && this.$emit('mode', { id: this.song.id });
+    },
+    listClickHandler() {
+      this.song && this.$emit('list', { id: this.song.id });
     }
   }
 };

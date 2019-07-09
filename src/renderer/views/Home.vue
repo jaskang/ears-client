@@ -40,20 +40,20 @@
         </el-main>
       </el-container>
     </div>
-    <Player class="main__footer" :song="playerSong" />
+    <ListPlayer class="main__footer" />
   </div>
 </template>
 <script>
 // @ is an alias to /src
 // import UserProfile from '@/renderer/components/UserProfile/UserProfile';
-import Player from '@/renderer/components/Player';
+import ListPlayer from './components/ListPlayer';
 import Aside from '@/renderer/components/Aside';
 import { mapState, mapActions } from 'vuex';
 
 export default {
   name: 'Home',
   components: {
-    Player,
+    ListPlayer,
     Aside
   },
   computed: {
@@ -62,7 +62,7 @@ export default {
       status: state => state.status
     }),
     ...mapState('user', {
-      likelist: state => state.likelist,
+      likeList: state => state.likeList,
       profile: state => state.profile
     }),
     playerSong() {
@@ -84,10 +84,10 @@ export default {
     if (!islogin) {
       await this.login({ phone: '13307308426', password: 'k622768' });
     }
-    await this.playlist();
+    await this.playList();
   },
   methods: {
-    ...mapActions('user', ['isLogin', 'login', 'playlist'])
+    ...mapActions('user', ['isLogin', 'login', 'playList'])
   }
 };
 </script>
