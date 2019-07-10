@@ -58,13 +58,14 @@
 import { mapState, mapActions } from 'vuex';
 
 export default {
+  name: 'RecommendList',
   props: {},
   computed: {
     ...mapState('user', {
       recommendList: state => state.recommendList
     })
   },
-  mounted() {
+  created() {
     this.getRecommendList();
   },
   methods: {

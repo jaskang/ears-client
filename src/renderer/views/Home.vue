@@ -36,7 +36,9 @@
           <Aside />
         </el-aside>
         <el-main class="main__main">
-          <router-view />
+          <keep-alive>
+            <router-view />
+          </keep-alive>
         </el-main>
       </el-container>
     </div>
