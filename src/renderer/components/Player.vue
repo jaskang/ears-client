@@ -3,28 +3,26 @@
     <audio ref="audioEl" autoplay />
     <div class="jplayer__bar">
       <vue-slider
+        :dot-size="[8, 8]"
+        :duration="0.1"
+        :height="2"
+        :value="durationVal"
         class="jplayer__slider"
         direction="ltr"
         tooltip="none"
-        :value="durationVal"
-        :height="2"
-        :dot-size="[8, 8]"
-        :duration="0.1"
         @change="durationChangeHandler"
       ></vue-slider>
     </div>
     <div class="jplayer__content">
       <div class="jplayer__info">
         <div
-          class="jplayer__pic"
           :style="{ backgroundImage: `url(${song ? song.pic : ''})` }"
+          class="jplayer__pic"
         ></div>
         <div v-if="song" class="jplayer__text">
           <div class="jplayer__names">
             <div class="jplayer__song">{{ song ? song.name : '' }}</div>
-            <div class="jplayer__singer">
-              {{ song ? song.singer : '' }}
-            </div>
+            <div class="jplayer__singer">{{ song ? song.singer : '' }}</div>
           </div>
           <div class="jplayer__timer">
             {{ status.duration | duration }} / {{ song.duration | duration }}
@@ -47,10 +45,10 @@
           <i class="icon-next"></i>
         </div>
         <div class="jplayer__button" @click="modeClickHandler">
-          <i class="icon-mode-recommend"></i>
-          <!-- <i class="icon-mode-random"></i>
-          <i class="icon-mode-list"></i>
-          <i class="icon-mode-single"></i> -->
+          <i v-if="mode === 'recommend'" class="icon-mode-recommend"></i>
+          <i v-if="mode === 'list'" class="icon-mode-list"></i>
+          <i v-if="mode === 'single'" class="icon-mode-single"></i>
+          <i v-if="mode === 'random'" class="icon-mode-random"></i>
         </div>
       </div>
       <div class="jplayer__other">
@@ -59,18 +57,18 @@
         </div>
         <div class="jplayer__button">
           <el-tooltip
-            popper-class="jplayer__volume-tooltip"
-            placement="top"
             effect="light"
+            placement="top"
+            popper-class="jplayer__volume-tooltip"
           >
             <vue-slider
               slot="content"
+              :dot-size="[10, 10]"
+              :duration="0.2"
+              :height="80"
               :value="volumeVal"
               direction="btt"
               tooltip="none"
-              :dot-size="[10, 10]"
-              :height="80"
-              :duration="0.2"
               @change="volumeChangeHandler"
             ></vue-slider>
             <i
@@ -106,6 +104,13 @@ export default {
           duration: 0,
           liked: false
         };
+      }
+    },
+    mode: {
+      type: String,
+      default: 'list',
+      validator: function(value) {
+        return ['recommend', 'random', 'list', 'single'].indexOf(value) !== -1;
       }
     }
   },
