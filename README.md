@@ -3,19 +3,19 @@
   <img src="https://img.shields.io/badge/version-0.1.0-blue.svg?cacheSeconds=2592000" />
 </p>
 
-> 基于 electron 的网易云音乐同步听歌软件
+> 基于 electron 的网易云音乐客户端 同步听歌软件
+
+## Feature
+
+- [X]播放器
+- [x] 网易云歌单
+- [ ] 匹配同步听歌
 
 ## Install
 
 ```sh
 npm install
 ```
-
-## Author
-
-👤 **jaskang**
-
-- Github: [@jaskang](https://github.com/jaskang)
 
 ## 🤝 Contributing
 
@@ -24,7 +24,3 @@ Contributions, issues and feature requests are welcome!<br />Feel free to check 
 ## Show your support
 
 Give a ⭐️ if this project helped you!
-
----
-
-_This README was generated with ❤️ by [readme-md-generator](https://github.com/kefranabg/readme-md-generator)_
