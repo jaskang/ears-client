@@ -11,6 +11,10 @@
 - [x] 网易云歌单
 - [ ] 匹配同步听歌
 
+## screenshots
+
+![]('./public/demo/likelist@2x.png')
+
 ## Install
 
 ```sh
