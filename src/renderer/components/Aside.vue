@@ -39,6 +39,7 @@
     class="aside"
     text-color="#303133"
     active-text-color="#f56c6c"
+    :default-active="$route.path"
     :router="true"
   >
     <div class="aside__header">
@@ -60,7 +61,7 @@
       <i class="icon-sousuo"></i>
       <span slot="title">每日推荐</span>
     </el-menu-item>
-    <el-menu-item index="/">
+    <el-menu-item index="/likelist">
       <i class="icon-xihuan"></i>
       <span slot="title">我喜欢的音乐</span>
     </el-menu-item>

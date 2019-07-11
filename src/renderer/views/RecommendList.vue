@@ -5,11 +5,6 @@
   text-overflow: ellipsis;
   vertical-align: middle;
 }
-.table-cell {
-  .cell {
-    // padding: 0;
-  }
-}
 .table-like {
   color: @color-danger;
   font-size: 16px;

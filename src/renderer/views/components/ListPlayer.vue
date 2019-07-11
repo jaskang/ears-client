@@ -2,6 +2,7 @@
 <template>
   <Player
     :song="song"
+    :mode="mode"
     @like="likeHandler"
     @prev="prevHandler"
     @next="nextHandler"
@@ -21,7 +22,8 @@ export default {
   },
   computed: {
     ...mapState('player', {
-      song: state => state.song
+      song: state => state.song,
+      mode: state => state.mode
     })
   },
   methods: {
@@ -29,7 +31,9 @@ export default {
       next: 'next',
       prev: 'prev'
     }),
-    ...mapActions({}),
+    ...mapActions('player', {
+      changeMode: 'mode'
+    }),
     likeHandler() {},
     prevHandler() {
       this.prev();
@@ -37,8 +41,12 @@ export default {
     nextHandler() {
       this.next();
     },
-    modeHandler() {},
-    listHandler() {},
+    async modeHandler() {
+      await this.changeMode();
+    },
+    listHandler() {
+      this.$router.push('/playlist');
+    },
     onerrorHandler() {
       this.next();
     },

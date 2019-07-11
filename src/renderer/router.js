@@ -8,31 +8,45 @@ import PlayList from './views/PlayList';
 
 Vue.use(Router);
 
-export default new Router({
+const router = new Router({
   routes: [
-    {
-      path: '/',
-      name: 'home',
-      component: Home,
-      children: [
-        {
-          path: '',
-          component: LikeList
-        },
-        {
-          path: 'recommend-list',
-          component: RecommendList
-        },
-        {
-          path: 'playlist',
-          component: PlayList
-        }
-      ]
-    },
     {
       path: '/login',
       name: 'login',
       component: Login
+    },
+    {
+      path: '/',
+      component: Home,
+      children: [
+        {
+          path: '/',
+          redirect: 'likelist'
+        },
+        {
+          name: 'likelist',
+          path: 'likelist',
+          component: LikeList
+        },
+        {
+          name: 'recommend-list',
+          path: 'recommend-list',
+          component: RecommendList
+        },
+        {
+          name: 'playlist',
+          path: 'playlist',
+          component: PlayList
+        }
+      ]
     }
   ]
 });
+
+router.beforeEach((to, from, next) => {
+  console.log(to);
+  console.log(from);
+  next();
+});
+
+export default router;

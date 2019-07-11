@@ -13,3 +13,19 @@ export function detail(data, cookies = '') {
     cookies: cookies
   });
 }
+
+export function intelligence(data, cookies = '') {
+  return http({
+    method: 'POST',
+    url: `http://music.163.com/weapi/playmode/intelligence/list`,
+    data: {
+      songId: data.id,
+      type: 'fromPlayOne',
+      playlistId: data.pid,
+      startMusicId: data.id,
+      count: 1
+    },
+    crypto: 'weapi',
+    cookies: cookies
+  });
+}

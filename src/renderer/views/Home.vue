@@ -50,7 +50,7 @@
 // import UserProfile from '@/renderer/components/UserProfile/UserProfile';
 import ListPlayer from './components/ListPlayer';
 import Aside from '@/renderer/components/Aside';
-import { mapState, mapActions } from 'vuex';
+import { mapActions } from 'vuex';
 
 export default {
   name: 'Home',
@@ -58,29 +58,7 @@ export default {
     ListPlayer,
     Aside
   },
-  computed: {
-    ...mapState('player', {
-      song: state => state.song,
-      status: state => state.status
-    }),
-    ...mapState('user', {
-      likeList: state => state.likeList,
-      profile: state => state.profile
-    }),
-    playerSong() {
-      if (this.song) {
-        return {
-          id: this.song.id,
-          pic: this.song.al.picUrl,
-          src: this.song._src,
-          name: this.song.name,
-          singer: this.song._singer.name,
-          duration: this.song.dt
-        };
-      }
-      return null;
-    }
-  },
+  computed: {},
   async mounted() {
     const islogin = await this.isLogin();
     if (!islogin) {

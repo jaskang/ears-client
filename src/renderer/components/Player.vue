@@ -52,7 +52,7 @@
         </div>
       </div>
       <div class="jplayer__other">
-        <div class="jplayer__button">
+        <div class="jplayer__button" @click="listClickHandler">
           <i class="icon-list"></i>
         </div>
         <div class="jplayer__button">
@@ -110,7 +110,7 @@ export default {
       type: String,
       default: 'list',
       validator: function(value) {
-        return ['recommend', 'random', 'list', 'single'].indexOf(value) !== -1;
+        return ['recommend', 'list', 'random', 'single'].indexOf(value) !== -1;
       }
     }
   },

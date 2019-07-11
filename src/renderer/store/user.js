@@ -11,6 +11,7 @@ export default {
     profile: userProfile,
     playList: [],
     recommendList: [],
+    likeDetail: null,
     likeList: [],
     likeIds: []
   },
@@ -22,7 +23,8 @@ export default {
     setPlayList(state, playList) {
       state.playList = playList;
     },
-    setLikeList(state, { likeList, likeIds }) {
+    setLikeList(state, { likeDetail, likeList, likeIds }) {
+      state.likeDetail = likeDetail;
       state.likeList = likeList;
       state.likeIds = likeIds;
     },
@@ -76,6 +78,7 @@ export default {
         return trackId.id;
       });
       commit('setLikeList', {
+        likeDetail: likeListRet.playlist,
         likeList,
         likeIds
       });
