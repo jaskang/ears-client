@@ -13,7 +13,7 @@
 
 ## screenshots
 
-![]('./public/demo/likelist@2x.png')
+![](public/demo/likelist@2x.png)
 
 ## Install
 
