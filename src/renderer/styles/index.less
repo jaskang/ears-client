@@ -20,15 +20,6 @@ h5 {
   padding: 0;
 }
 
-hr {
-  box-sizing: content-box; /* 1 */
-  height: 0; /* 1 */
-  border-width: 0 0 1px 0;
-  background: transparent;
-  border-bottom: 1px solid @border-color-base;
-  overflow: visible; /* 2 */
-}
-
 pre {
   font-family: monospace, monospace; /* 1 */
   font-size: 1em; /* 2 */
@@ -104,7 +95,15 @@ textarea {
 }
 
 hr {
+  box-sizing: border-box; /* 1 */
+  height: 1px; /* 1 */
+  margin: 0;
+  border-width: 0 0 1px 0;
+  background: transparent;
+  border-bottom: 1px solid @border-color-base;
+  overflow: visible; /* 2 */
 }
+
 *,
 *:before,
 *:after {
@@ -128,7 +127,7 @@ hr {
 /*定义滑块 内阴影+圆角*/
 ::-webkit-scrollbar-thumb {
   border-radius: 10px;
-  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+  box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
   background-color: rgba(0, 0, 0, 0.8);
 }
 

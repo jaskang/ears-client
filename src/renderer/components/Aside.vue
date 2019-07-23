@@ -20,6 +20,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    padding: 20px;
   }
   &__avatar {
     width: 40px;
