@@ -17,11 +17,11 @@ protocol.registerSchemesAsPrivileged([
   { scheme: 'app', privileges: { secure: true, standard: true } }
 ]);
 
-function createWindow() {
-  const port = process.env.PORT || 10923;
-  server.listen(port);
-  console.log(`server start part:${port}`);
+const port = process.env.PORT || 10923;
+server.listen(port);
+console.log(`server start part:${port}`);
 
+function createWindow() {
   // Create the browser window.
   win = new BrowserWindow({
     width: 800,
@@ -42,7 +42,13 @@ function createWindow() {
     // Load the index.html when not in development
     win.loadURL('app://./index.html');
   }
-
+  win.on('close', event => {
+    if (process.platform === 'darwin') {
+      win.blur();
+      win.hide();
+      event.preventDefault();
+    }
+  });
   win.on('closed', () => {
     win = null;
   });
@@ -50,6 +56,7 @@ function createWindow() {
 
 // Quit when all windows are closed.
 app.on('window-all-closed', () => {
+  console.log(`window-all-closed`);
   // On macOS it is common for applications and their menu bar
   // to stay active until the user quits explicitly with Cmd + Q
   if (process.platform !== 'darwin') {
@@ -60,8 +67,13 @@ app.on('window-all-closed', () => {
 app.on('activate', () => {
   // On macOS it's common to re-create a window in the app when the
   // dock icon is clicked and there are no other windows open.
+  console.log(`activate`);
+
   if (win === null) {
     createWindow();
+  }
+  if (!win.isVisible()) {
+    win.show();
   }
 });
 

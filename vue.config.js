@@ -29,13 +29,7 @@ module.exports = {
       mainProcessFile: 'src/main/index.js',
       mainProcessWatch: ['src/main'],
       builderOptions: {
-        appId: 'com.ears.www',
-        mac: {
-          icon: 'public/logo.ico'
-        },
-        win: {
-          icon: 'public/logo.ico'
-        }
+        appId: 'com.ears.www'
       }
     }
   }
