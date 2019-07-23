@@ -33,18 +33,12 @@ export default {
     }
   },
   actions: {
-    async isLogin({ commit, state }) {
+    async isLogin({ commit }) {
       try {
-        if (state.profile && state.profile.userId) {
-          console.log(`has userId`);
-          const stateRet = await neapi('/login/state');
-          commit('setProfile', stateRet.profile);
-          await neapi('/login/refresh');
-          return Promise.resolve(true);
-        } else {
-          console.log(`no userId`);
-          return Promise.resolve(false);
-        }
+        const stateRet = await neapi('/login/state');
+        commit('setProfile', stateRet.profile);
+        await neapi('/login/refresh');
+        return Promise.resolve(true);
       } catch (err) {
         return Promise.resolve(false);
       }
@@ -55,6 +49,11 @@ export default {
         password: password
       });
       commit('setProfile', loginRet.profile);
+      return loginRet;
+    },
+    async logout({ commit }) {
+      await neapi('/login/logout', {});
+      commit('setProfile', {});
     },
     async getRecommendList({ commit }) {
       const recommendList = await neapi('/recommend/songs', {});

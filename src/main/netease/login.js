@@ -34,10 +34,17 @@ export function state(data, cookies = '') {
   }).then(response => {
     try {
       let profile = eval(`(${/GUser\s*=\s*([^;]+);/.exec(response.body)[1]})`);
-      return Promise.resolve({
-        status: 200,
-        body: { code: 200, profile: profile }
-      });
+      if (profile && Object.keys(profile).length > 0) {
+        return Promise.resolve({
+          status: 200,
+          body: { code: 200, profile: profile }
+        });
+      } else {
+        return Promise.resolve({
+          status: 301,
+          body: { code: 301, profile: null }
+        });
+      }
     } catch (err) {
       return Promise.resolve({ status: 301, body: { code: 301 } });
     }
@@ -48,6 +55,17 @@ export function refresh(data, cookies = '') {
   return http({
     method: 'POST',
     url: `https://music.163.com/weapi/login/token/refresh`,
+    data: {},
+    crypto: 'weapi',
+    ua: 'pc',
+    cookies: cookies
+  });
+}
+
+export function logout(data, cookies = '') {
+  return http({
+    method: 'POST',
+    url: `https://music.163.com/weapi/logout`,
     data: {},
     crypto: 'weapi',
     ua: 'pc',

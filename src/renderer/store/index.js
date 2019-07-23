@@ -5,10 +5,16 @@ import player from './player';
 Vue.use(Vuex);
 
 export default new Vuex.Store({
-  state: {},
+  state: {
+    isInit: false
+  },
   getters: {},
+  mutations: {
+    init(state) {
+      state.isInit = true;
+    }
+  },
   actions: {},
-  mutations: {},
   modules: {
     user,
     player

@@ -8,7 +8,11 @@ const neapi = axios.create({
 // 添加响应拦截器
 neapi.interceptors.response.use(
   function(response) {
-    return response.data;
+    if (response.data && response.data.code === 200) {
+      return response.data;
+    } else {
+      return Promise.reject(new Error(`code:${response.data.code}`));
+    }
   },
   function(error) {
     // 对响应错误做点什么

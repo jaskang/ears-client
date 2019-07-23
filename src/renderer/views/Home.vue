@@ -7,6 +7,7 @@
     height: 50px;
     background-color: #f5f7fa;
     -webkit-app-region: drag;
+    display: flex;
   }
   &__body {
     height: calc(100vh - 110px);
@@ -29,7 +30,11 @@
 </style>
 <template>
   <div class="main">
-    <div class="main__header"></div>
+    <div class="main__header">
+      <div></div>
+      <div></div>
+      <div></div>
+    </div>
     <div class="main__body">
       <el-container style="height:100%;">
         <el-aside class="main__aside" width="160px">
@@ -60,14 +65,10 @@ export default {
   },
   computed: {},
   async mounted() {
-    const islogin = await this.isLogin();
-    if (!islogin) {
-      await this.login({ phone: '13307308426', password: 'k622768' });
-    }
     await this.playList();
   },
   methods: {
-    ...mapActions('user', ['isLogin', 'login', 'playList'])
+    ...mapActions('user', ['playList'])
   }
 };
 </script>

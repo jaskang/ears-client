@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import Router from 'vue-router';
+import store from '@/renderer/store/index';
 import Home from './views/Home.vue';
 import Login from './views/Login';
 import LikeList from './views/LikeList';
@@ -43,10 +44,20 @@ const router = new Router({
   ]
 });
 
-router.beforeEach((to, from, next) => {
-  console.log(to);
-  console.log(from);
-  next();
+router.beforeEach(async (to, from, next) => {
+  if (!store.state.isInit) {
+    const islogin = await store.dispatch('user/isLogin');
+    setTimeout(() => {
+      store.commit('init');
+      if (islogin) {
+        next();
+      } else {
+        next({ path: '/login' });
+      }
+    }, 5000);
+  } else {
+    next();
+  }
 });
 
 export default router;
