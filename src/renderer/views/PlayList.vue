@@ -8,26 +8,37 @@
       :data="list"
       style="width: 100%"
       size="mini"
+      header-cell-class-name="table-cell"
       cell-class-name="table-cell"
       @row-dblclick="playHandler"
     >
-      <el-table-column type="index" width="40" align="center"></el-table-column>
+      <el-table-column
+        label="#"
+        class-name="table-index"
+        width="40"
+        align="center"
+      >
+        <template slot-scope="scope">
+          <i v-if="$isPlaying(scope.row.id)" class="icon-voice"></i>
+          <span v-else>
+            {{ scope.$index }}
+          </span>
+        </template>
+      </el-table-column>
       <el-table-column label="" width="40" align="center">
         <template slot-scope="scope">
-          <span class="table-like">
-            <i v-if="$islike(scope.row.id)" class="icon-like"></i>
-            <i v-else class="icon-like-off"></i>
-          </span>
+          <i v-if="$islike(scope.row.id)" class="icon-like"></i>
+          <i v-else class="icon-like-off"></i>
         </template>
       </el-table-column>
       <el-table-column label="歌名">
         <template slot-scope="scope">
-          <span class="table-label">{{ scope.row.name }}</span>
+          {{ scope.row.name }}
         </template>
       </el-table-column>
       <el-table-column label="歌手" width="180">
         <template slot-scope="scope">
-          <span class="table-label">{{ scope.row.artist.name }}</span>
+          {{ scope.row.artist.name }}
         </template>
       </el-table-column>
       <el-table-column label="时长" width="60" align="center">
