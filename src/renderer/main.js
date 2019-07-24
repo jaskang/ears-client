@@ -1,7 +1,7 @@
 import Vue from 'vue';
 import ElementUI from 'element-ui';
-import '@/renderer/styles/index.less';
 import 'element-ui/lib/theme-chalk/index.css';
+import '@/renderer/styles/index.less';
 import App from './App.vue';
 import inject from './inject';
 import router from './router';

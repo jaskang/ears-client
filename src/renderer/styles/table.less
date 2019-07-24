@@ -1,0 +1,20 @@
+@import './vars.less';
+
+.table-cell {
+  .cell {
+    padding: 0;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    vertical-align: middle;
+  }
+  [class^='icon-'],
+  [class*=' icon-'] {
+    font-size: 16px;
+    line-height: 23px;
+    vertical-align: middle;
+  }
+  .icon-like,
+  .icon-voice {
+    color: @color-danger;
+  }
+}

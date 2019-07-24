@@ -1,15 +1,5 @@
 <style lang="less">
 @import '~@/renderer/styles/vars';
-.table-label {
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  vertical-align: middle;
-}
-.table-like {
-  color: @color-danger;
-  font-size: 16px;
-  vertical-align: middle;
-}
 </style>
 
 <template>
