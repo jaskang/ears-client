@@ -16,7 +16,7 @@
     <div class="jplayer__content">
       <div class="jplayer__info">
         <div
-          :style="{ backgroundImage: `url(${song ? song.pic : ''})` }"
+          :style="{ backgroundImage: `url(${song ? song.album.picUrl : ''})` }"
           class="jplayer__pic"
         ></div>
         <div v-if="song" class="jplayer__text">

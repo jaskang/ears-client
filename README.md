@@ -12,6 +12,8 @@
 - [x] 网易云歌单
 - [ ] 匹配同步听歌
 
+> 更多详细的开发计划 可以看这里 [ears v0.1 todo](https://github.com/JasKang/ears-client/projects/1)
+
 ## screenshots
 
 ![](public/demo/likelist@2x.png)
